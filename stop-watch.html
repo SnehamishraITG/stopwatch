@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>document</title>
+  <style>
+    .box{
+      display:flex;
+    align-items: center;
+      flex-direction:column;
+     padding-top: 15%;
+     gap:40px;
+      background-image: linear-gradient(to right, rgb(3, 40, 74), rgb(239, 242, 243),rgb(2, 15, 84));
+      width:100%;
+      height:65vh;
+    }
+    #watch{
+      font-size: 30px;
+      color:rgb(2, 15, 84);
+    }
+    .button{
+      padding:10px 15px;
+      background-image: linear-gradient(to bottom,rgb(2, 15, 84));
+      color:white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div>
+  <div id="watch">00:00:00</div>
+  </div>
+  <div>
+  <button id="buttons" class="button">Start</button>
+    <button id="stopbutton" class="button">stop</button>
+  <button id="reset" class="button">Reset</button>
+  </div>
+
+
+  <script>
+    let timer;
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+    let value = false;
+    const watch = document.getElementById('watch');
+    const Button = document.getElementById('buttons');
+    const resetButton = document.getElementById('reset');
+    const stopbuttons=document.getElementById("stopbutton");
+
+    function watchupdate() {
+      const Secondsvalue = seconds < 10 ? "0" + seconds : seconds;
+      const Minutesvalue = minutes < 10 ? "0" + minutes : minutes;
+      const Hoursvalue = hours < 10 ? "0" + hours : hours;
+      watch.textContent = `${Hoursvalue}:${Minutesvalue}:${Secondsvalue}`;
+    }
+
+    function startStop() {
+      if (value !==false) {
+        return
+      }
+        timer = setInterval(() => {
+          seconds++;
+          if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes === 60) {
+              minutes = 0;
+              hours++;
+            }
+          }
+          watchupdate();
+         }, 1000);
+      }
+     
+         function stopbutton(){
+                      clearInterval(timer);
+                      value=false;
+        }
+         
+
+    function reset() {
+      clearInterval(timer);
+      value = false;
+      seconds = 0;
+      minutes = 0;
+      hours = 0;
+      watchupdate();
+      Button.textContent = "Start";
+    }
+
+      
+
+
+    Button.addEventListener('click', startStop);
+    resetButton.addEventListener('click', reset);
+    stopbuttons.addEventListener('click',  stopbutton);
+
+
+       document.addEventListener("keydown",function(s){
+         let key=s.key.toLowerCase();
+         if(key==="s"){
+           startStop();
+         }
+          if(key==="t"){
+          stopbutton();
+         }
+         if(key==="r"){
+           reset();
+         }
+       })
+
+  </script>
+
+</body>
+
+</html>
